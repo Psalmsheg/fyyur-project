@@ -3,7 +3,7 @@
 #----------------------------------------------------------------------------#
 
 import json
-import dateutil.parser
+# import dateutil.parser
 import babel
 from flask import Flask, render_template, request, Response, flash, redirect, url_for
 from flask_moment import Moment
@@ -196,7 +196,7 @@ def delete_venue(venue_id):
 @app.route('/artists')
 def artists():
     # TODO: replace with real data returned from querying the database
-    data = db.session.query(Artist).filter_by(Artist.id, Artist.name).all()
+    data = Artist.query.with_entities(Artist.id, Artist.name).all()
     return render_template('pages/artists.html', artists=data)
 
 
@@ -423,7 +423,7 @@ def shows():
     list_of_shows = db.session.query(Show)
     data = []
     for new_show in list_of_shows:
-        data.append({ "venue_id": show.venue_id, "venue_name": new_show.venue.name, "artist_id": new_show.artist_id, "artist_name": new_show.artist.name, "artist_image_link": new_show.artist.image_link, "start_time": str(new_show.start_time) })
+        data.append({ "venue_id": new_show.venue_id, "venue_name": new_show.venue.name, "artist_id": new_show.artist_id, "artist_name": new_show.artist.name, "artist_image_link": new_show.artist.image_link, "start_time": str(new_show.start_time) })
     return render_template('pages/shows.html', shows=data)
 
 
